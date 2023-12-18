@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -56,5 +55,16 @@ export class TodosService {
     }
     await this.db.todo.delete({ where: { id } });
     return 'succssfully deleted';
+  }
+
+  //
+  async getAllForCurrentUser() {
+    const currentUser = this.appStorage.get('user');
+
+    const todos = await this.db.todo.findMany({
+      where: { userId: currentUser?.id },
+    });
+
+    return todos;
   }
 }

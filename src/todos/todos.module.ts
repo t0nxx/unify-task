@@ -21,6 +21,7 @@ export class TodosModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: 'todos', method: RequestMethod.POST },
+        { path: 'todos/allOfCurrentUSer', method: RequestMethod.GET },
         { path: 'todos/:id', method: RequestMethod.PUT },
         { path: 'todos/:id', method: RequestMethod.DELETE },
       );

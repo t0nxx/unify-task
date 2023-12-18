@@ -23,6 +23,10 @@ export class TodosController {
     return this.todosService.create(createTodoDto);
   }
 
+  @Get('allOfCurrentUSer')
+  allOfCurrentUSer() {
+    return this.todosService.getAllForCurrentUser();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.todosService.findOne(id);

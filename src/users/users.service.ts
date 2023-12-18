@@ -34,7 +34,11 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.db.user.update({
+    const user = await this.db.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User Not Found');
+    }
+    await this.db.user.update({
       where: { id },
       data: updateUserDto,
     });
@@ -54,5 +58,11 @@ export class UsersService {
     }
     await this.db.user.delete({ where: { id } });
     return 'success';
+  }
+
+  async getAllUsers() {
+    const users = await this.db.user.findMany();
+    const formated = users.map((u) => new ReadUserDto(u));
+    return formated;
   }
 }
