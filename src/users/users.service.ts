@@ -42,6 +42,16 @@ export class UsersService {
   }
 
   async remove(id: string) {
+    // check current user is admin or not
+    const isCurrentUserAdmin = await this.db.user.findUnique({ where: { id } });
+    if (isCurrentUserAdmin.isAdmin! == true) {
+      throw new BadRequestException('You are not admin');
+    }
+    /// get target delete user
+    const user = await this.db.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User Not Found');
+    }
     await this.db.user.delete({ where: { id } });
     return 'success';
   }
